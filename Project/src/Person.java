@@ -3,6 +3,7 @@ public abstract class Person {
     private String name;
     private int age;
     private String id;
+    private Validations v = new Validations();
 
     public Person(String name, int age, String id) {
         setName(name);
@@ -15,7 +16,9 @@ public abstract class Person {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (v.isValidName(name)){
+            this.name = name;
+        }
     }
 
     public int getAge() {
@@ -23,7 +26,9 @@ public abstract class Person {
     }
 
     public void setAge(int age) {
-        this.age = age;
+        if (v.isPositiveWithNumber(age)){
+            this.age = age;
+        }
     }
 
     public String getId() {

@@ -2,6 +2,7 @@ public class Student extends Person{
 
     private String degree;
     private int semester;
+    private Validations v = new Validations();
 
     public Student(String name, int age, String id, String degree, int semester) {
         super(name, age, id);
@@ -14,7 +15,9 @@ public class Student extends Person{
     }
 
     public void setDegree(String degree) {
-        this.degree = degree;
+        if (v.isInteger(degree) && v.isPositive(degree)){
+            this.degree = degree;
+        }
     }
 
     public int getSemester() {
@@ -22,6 +25,9 @@ public class Student extends Person{
     }
 
     public void setSemester(int semester) {
-        this.semester = semester;
+        if (v.isPositiveWithNumber(semester)){
+            this.semester = semester;
+        }
+
     }
 }
