@@ -3,6 +3,8 @@ import java.util.ArrayList;
 
 public class Menu {
 
+    private Validations v = new Validations();
+
     public void menu(){
         String[] options = {"Add Student", "Delete Student", "Show All Students", "Search Student By ID", "Exit"};
 
@@ -54,16 +56,48 @@ public class Menu {
 
     public void addStudentInfo(DataBase db){
         String id = JOptionPane.showInputDialog(null, "Enter the Student ID", "Student Info", JOptionPane.QUESTION_MESSAGE);
+
+        while(!v.isPositive(id) || !v.isInteger(id)){
+            JOptionPane.showMessageDialog(null, "The ID is not a number or is a negative number", "Student", JOptionPane.WARNING_MESSAGE);
+            id = JOptionPane.showInputDialog(null, "Enter the Student ID", "Student Info", JOptionPane.QUESTION_MESSAGE);
+            while (!db.idExist(id)){
+                JOptionPane.showMessageDialog(null, "The ID is in the database", "Student", JOptionPane.WARNING_MESSAGE);
+                id = JOptionPane.showInputDialog(null, "Enter the Student ID", "Student Info", JOptionPane.QUESTION_MESSAGE);
+            }
+        }
+
         String name = JOptionPane.showInputDialog(null, "Enter the Student name", "Student Info", JOptionPane.QUESTION_MESSAGE);
+
+        while(!v.isValidName(name)){
+            JOptionPane.showMessageDialog(null, "The name contains invalid characters", "Student", JOptionPane.WARNING_MESSAGE);
+            name = JOptionPane.showInputDialog(null, "Enter the Student name", "Student Info", JOptionPane.QUESTION_MESSAGE);
+        }
+
+
         String age = JOptionPane.showInputDialog(null, "Enter the Student age", "Student Info", JOptionPane.QUESTION_MESSAGE);
+
+        while(!v.isInteger(age) || !v.isPositive(age)){
+            JOptionPane.showMessageDialog(null, "The age is not a number or it's a negative number", "Student", JOptionPane.WARNING_MESSAGE);
+            age = JOptionPane.showInputDialog(null, "Enter the Student age", "Student Info", JOptionPane.QUESTION_MESSAGE);
+        }
         int parsedAge = Integer.parseInt(age);
+
         String degree = JOptionPane.showInputDialog(null, "Enter the Student degree", "Student Info", JOptionPane.QUESTION_MESSAGE);
+        while(!v.isValidName(degree)){
+            JOptionPane.showMessageDialog(null, "The degree contains invalid characters", "Student", JOptionPane.WARNING_MESSAGE);
+            degree = JOptionPane.showInputDialog(null, "Enter the Student degree", "Student Info", JOptionPane.QUESTION_MESSAGE);
+        }
+
         String semester = JOptionPane.showInputDialog(null, "Enter the Student semester", "Student Info", JOptionPane.QUESTION_MESSAGE);
+        while(!v.isInteger(semester) || !v.isPositive(semester)){
+            JOptionPane.showMessageDialog(null, "The semester is not a number or it's a negative number", "Student", JOptionPane.WARNING_MESSAGE);
+            semester = JOptionPane.showInputDialog(null, "Enter the Student semester", "Student Info", JOptionPane.QUESTION_MESSAGE);
+        }
         int parsedSemester = Integer.parseInt(semester);
 
         Student student = new Student(name, parsedAge, id, degree, parsedSemester);
         db.addStudent(student);
-        JOptionPane.showMessageDialog(null, "Student added correctly", "Student", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "The user was created correctly", "Student", JOptionPane.INFORMATION_MESSAGE);
 
     }
 

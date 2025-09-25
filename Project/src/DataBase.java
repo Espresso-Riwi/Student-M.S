@@ -4,6 +4,7 @@ import java.util.HashMap;
 public class DataBase implements Repository{
 
     private final HashMap<String, Student> studentDataBase = new HashMap<>();
+    Validations v = new Validations();
 
     @Override
     public Student findById(String id) {
@@ -27,6 +28,10 @@ public class DataBase implements Repository{
     @Override
     public void addStudent(Student student) {
         studentDataBase.put(student.getId(), student);
+    }
+
+    public boolean idExist(String id){
+        return studentDataBase.containsKey(id);
     }
 
 
