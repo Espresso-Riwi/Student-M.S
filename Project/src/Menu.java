@@ -38,32 +38,42 @@ public class Menu {
         ArrayList<Student> usersList = db.getAll();
         StringBuilder students = new StringBuilder();
 
-        for (int i = 0; i < usersList.size(); i++) {
-            students.append("Name: ").append(usersList.get(i).getName()).append("\nDegree: ").append(usersList.get(i).getDegree()).append("\nID: ").append(usersList.get(i).getId()).append("\n\n");
+        if (usersList.isEmpty()){
+            JOptionPane.showMessageDialog(null, "There is no students in the database", "Students list", JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            for (Student student : usersList) {
+                students.append("Name: ").append(student.getName()).append("\nDegree: ").append(student.getDegree()).append("\nID: ").append(student.getId()).append("\n\n");
+            }
+
+            JOptionPane.showMessageDialog(null, students.toString(), "Students list", JOptionPane.INFORMATION_MESSAGE);
         }
-
-        JOptionPane.showMessageDialog(null, students.toString(), "Students list", JOptionPane.INFORMATION_MESSAGE);
-
     }
 
     public void showStudentById(DataBase db){
         String id = JOptionPane.showInputDialog(null, "Enter the Student ID", "Student ID", JOptionPane.QUESTION_MESSAGE);
         Student student = db.findById(id);
+        if (student == null){
+            JOptionPane.showMessageDialog(null, "That id doesn't exist in the database", "Student", JOptionPane.WARNING_MESSAGE);
+        }else{
+            String studentInfo ="Name: "+student.getName()+"\nDegree: "+student.getDegree()+"\nID: "+student.getId();
+            JOptionPane.showMessageDialog(null, studentInfo, "Student", JOptionPane.INFORMATION_MESSAGE);
+        }
 
-        String studentInfo ="Name: "+student.getName()+"\nDegree: "+student.getDegree()+"\nID: "+student.getId();
-        JOptionPane.showMessageDialog(null, studentInfo, "Student", JOptionPane.INFORMATION_MESSAGE);
+
     }
 
     public void addStudentInfo(DataBase db){
         String id = JOptionPane.showInputDialog(null, "Enter the Student ID", "Student Info", JOptionPane.QUESTION_MESSAGE);
 
-        while(!v.isPositive(id) || !v.isInteger(id)){
+        while(!v.isPositive(id) || !v.isInteger(id) || !db.idExist(id)){
+            if (!db.idExist(id)){
+                while (!db.idExist(id)){
+                    JOptionPane.showMessageDialog(null, "The ID is in the database", "Student", JOptionPane.WARNING_MESSAGE);
+                    id = JOptionPane.showInputDialog(null, "Enter the Student ID", "Student Info", JOptionPane.QUESTION_MESSAGE);
+                }
+            }
             JOptionPane.showMessageDialog(null, "The ID is not a number or is a negative number", "Student", JOptionPane.WARNING_MESSAGE);
             id = JOptionPane.showInputDialog(null, "Enter the Student ID", "Student Info", JOptionPane.QUESTION_MESSAGE);
-            while (!db.idExist(id)){
-                JOptionPane.showMessageDialog(null, "The ID is in the database", "Student", JOptionPane.WARNING_MESSAGE);
-                id = JOptionPane.showInputDialog(null, "Enter the Student ID", "Student Info", JOptionPane.QUESTION_MESSAGE);
-            }
         }
 
         String name = JOptionPane.showInputDialog(null, "Enter the Student name", "Student Info", JOptionPane.QUESTION_MESSAGE);

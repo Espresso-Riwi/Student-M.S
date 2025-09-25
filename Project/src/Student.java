@@ -15,7 +15,7 @@ public class Student extends Person{
     }
 
     public void setDegree(String degree) {
-        if (v.isInteger(degree) && v.isPositive(degree)){
+        if (v.isValidName(degree)){
             this.degree = degree;
         }
     }
@@ -28,6 +28,5 @@ public class Student extends Person{
         if (v.isPositiveWithNumber(semester)){
             this.semester = semester;
         }
-
     }
 }

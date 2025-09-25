@@ -31,8 +31,6 @@ public class DataBase implements Repository{
     }
 
     public boolean idExist(String id){
-        return studentDataBase.containsKey(id);
+        return !studentDataBase.containsKey(id);
     }
-
-
 }
