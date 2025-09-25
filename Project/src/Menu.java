@@ -5,19 +5,23 @@ public class Menu {
 
     public void menu(){
         String[] options = {"Add Student", "Delete Student", "Show All Students", "Search Student By ID", "Exit"};
-        String option = JOptionPane.showInputDialog(null, "Welcome to Park4U\nChoose the option that you want: ", "Menu", JOptionPane.QUESTION_MESSAGE, null, options, options[0]).toString();
+
         DataBase db = new DataBase();
         boolean flag = true;
         while (flag){
+            String option = JOptionPane.showInputDialog(null, "Welcome to Park4U\nChoose the option that you want: ", "Menu", JOptionPane.QUESTION_MESSAGE, null, options, options[0]).toString();
             switch (option){
                 case "Add Student":
+                    addStudentInfo(db);
                     break;
                 case "Delete Student":
+                    deleteStudentById(db);
                     break;
                 case "Show All Students":
                     showAllStudents(db);
                     break;
                 case "Search Student By ID":
+                    showStudentById(db);
                     break;
                 case "Exit":
                     flag = false;
@@ -30,13 +34,13 @@ public class Menu {
 
     public void showAllStudents(DataBase db){
         ArrayList<Student> usersList = db.getAll();
-        String students = "";
+        StringBuilder students = new StringBuilder();
 
         for (int i = 0; i < usersList.size(); i++) {
-            students+="Name: "+usersList.get(i).getName()+"\nDegree: "+usersList.get(i).getDegree()+"\nID: "+usersList.get(i).getId()+"\n\n";
+            students.append("Name: ").append(usersList.get(i).getName()).append("\nDegree: ").append(usersList.get(i).getDegree()).append("\nID: ").append(usersList.get(i).getId()).append("\n\n");
         }
 
-        JOptionPane.showMessageDialog(null, students, "Students list", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, students.toString(), "Students list", JOptionPane.INFORMATION_MESSAGE);
 
     }
 
@@ -44,7 +48,7 @@ public class Menu {
         String id = JOptionPane.showInputDialog(null, "Enter the Student ID", "Student ID", JOptionPane.QUESTION_MESSAGE);
         Student student = db.findById(id);
 
-        String studentInfo ="Name: "+student.getName()+"\nDegree: "+student.getDegree()+"\nID: "+student.getDegree();
+        String studentInfo ="Name: "+student.getName()+"\nDegree: "+student.getDegree()+"\nID: "+student.getId();
         JOptionPane.showMessageDialog(null, studentInfo, "Student", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -59,6 +63,14 @@ public class Menu {
 
         Student student = new Student(name, parsedAge, id, degree, parsedSemester);
         db.addStudent(student);
+        JOptionPane.showMessageDialog(null, "Student added correctly", "Student", JOptionPane.INFORMATION_MESSAGE);
+
+    }
+
+    public void deleteStudentById(DataBase db){
+        String id = JOptionPane.showInputDialog(null, "Enter the Student ID", "Student Info", JOptionPane.QUESTION_MESSAGE);
+        db.deleteById(id);
+        JOptionPane.showMessageDialog(null, "Student deleted correctly", "Student", JOptionPane.INFORMATION_MESSAGE);
 
     }
 }

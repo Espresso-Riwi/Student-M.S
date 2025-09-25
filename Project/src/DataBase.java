@@ -12,7 +12,11 @@ public class DataBase implements Repository{
 
     @Override
     public ArrayList<Student> getAll() {
-        return new ArrayList<>();
+        ArrayList<Student> studentsList = new ArrayList<>();
+        studentDataBase.forEach((k, v)-> {
+            studentsList.add(v);
+        });
+        return studentsList;
     }
 
     @Override
